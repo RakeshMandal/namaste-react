@@ -14,7 +14,8 @@ const About = () =>{
            
         
         
-    },[])
+    },[]);
+    
 
     return(
         <div>

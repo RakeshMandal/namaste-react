@@ -1,5 +1,5 @@
-import Card from "./Card";
-import { useEffect, useState } from "react";
+import Card, {withPrometedLable} from "./Card";
+import { useContext, useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
@@ -11,34 +11,35 @@ const Body = () =>{
     const [searchText, setSearchText] = useState("");
 
     const onlineStatus = useOnlineStatus();
+    const RestaurantWithPromoted = withPrometedLable(Card);
 
     useEffect(()=>{
         fetchData();
-    },[])
+    },[]);
     const fetchData = async () =>{
         const data = await fetch('https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING');
         const json = await data.json();
         setListOfRestaurant( json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
         setFilteredRestaurant(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    }
+    };
+    
     // conditional Rendering
     // if(listOfRestaurant.length === 0){
     //     return <Shimmer />
         
     // }
-
         if(onlineStatus === false)return(
             <h1>It's look like you are Offline, Please check your internet connection!!</h1>
         )
-
+        //const {loginedUser, setUserName} = useContext(UserContext)
     return listOfRestaurant?.length === 0 ? <Shimmer /> : (
         <div className="res-main-container">
-        <div className="filter">
-        <div className="search">
-        <input type="text" className="search-txt" value={searchText} onChange={(e)=>{
+        <div className="flex items-center">
+        <div className="search ">
+        <input type="text" className=" border border-solid border-black " value={searchText} onChange={(e)=>{
             setSearchText(e.target.value)
         }}/>
-        <button className="search-btn" onClick={()=>{
+        <button className=" bg-green-100 px-4 py-2 m-4 rounded-lg" onClick={()=>{
             const filterdRestaurant = listOfRestaurant.filter((res)=>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
             );
@@ -46,16 +47,26 @@ const Body = () =>{
         }}>Search</button>
 
         </div>
-        <button className="filter-btn" onClick={()=>{
+        <div>
+        <button className=" bg-gray-100 px-4 py-2 m-4 rounded-lg" onClick={()=>{
             const filteredRes = listOfRestaurant.filter((res)=>res.info.avgRating>4);
             setFilteredRestaurant(filteredRes);
         }}>Top Rated Restaurant</button>
+        </div>
+        {/* <div>
+        <label>User Name: </label>
+        <input value={loginedUser}  className="border border-black p-2" onChange={(e)=>setUserName(e.target.value)}/>
+        </div> */}
         
         </div>
-        <div className="res-container">
+        <div className=" flex flex-wrap">
        {
         filterdRestaurants && filterdRestaurants.map((restaurant)=> (
-            <Link to={"/restaurants/"+restaurant?.info.id} key={restaurant?.info.id}><Card  resData = {restaurant?.info}/></Link>
+            <Link to={"/restaurants/"+restaurant?.info.id} key={restaurant?.info.id}>
+            {restaurant.info.promoted ? (
+                <RestaurantWithPromoted resData = {restaurant?.info}/>
+            ): ( <Card  resData = {restaurant?.info}/>)}
+           </Link>
             ))
        }
         </div>

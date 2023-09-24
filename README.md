@@ -18,3 +18,12 @@
 - Diagnostic
 - Error Handling
 - Different prod and dev bundles
+
+# Redux Toolkit
+- Install @reduxjs/toolkit and react-redux
+- Build our Store
+- Connect our store to our app
+- Slice ( cartSlice )
+- dispatch ( Action )
+- Reducer ( Function )
+- Selector ( Subscribing our Store )
