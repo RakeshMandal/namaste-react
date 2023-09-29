@@ -9,6 +9,9 @@ import RestaurantMenue from "./components/RestaurantMenue";
 import { createBrowserRouter, RouterProvider,Outlet } from "react-router-dom";
 import Demo from "./components/Demo";
 import UserContext from "./utils/UserContext";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
+import Cart from "./components/Cart";
 
  // not using keys (not acceptable) <<<<< using index as a keys <<<<<<<<<<<<<<< unique id (best practice)
 
@@ -24,12 +27,14 @@ const AppLayout = ()=>{
 
   },[])
     return(
+      <Provider store={appStore}>
         <UserContext.Provider value = {[userName]}>
         <div className="app-container">
             <Header />
             <Outlet />
         </div>
         </UserContext.Provider>
+        </Provider>
     )
 
 }
@@ -72,7 +77,11 @@ const appRouter = createBrowserRouter([
       {
         path:"/restaurants/:resId",
         element: <RestaurantMenue />
-      }
+      },
+      {
+        path:"/cart",
+        element: <Cart />
+      },
     ],
     errorElement: <Error />
   },

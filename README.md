@@ -27,3 +27,8 @@
 - dispatch ( Action )
 - Reducer ( Function )
 - Selector ( Subscribing our Store )
+
+# Testing ( Type of Testing )
+- Unit Testing
+- Integration Testing 
+- End to End Testing ( e2e Testing) 
