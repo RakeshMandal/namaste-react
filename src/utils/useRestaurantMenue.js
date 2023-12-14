@@ -3,6 +3,8 @@ import { RESMENU_API } from "./constant";
 
 const useRestaurantMenue = (resId) =>{
     const [resInfo,setResInfo] = useState(null);
+    console.log(resId)
+    console.log(RESMENU_API)
 
     useEffect(()=>{
        fetchData();
